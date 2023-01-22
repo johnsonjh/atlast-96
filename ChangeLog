@@ -1,4 +1,4 @@
-                         Atlast Development Log
+                         ATLAST Development Log
 
                              by John Walker
 
@@ -9,7 +9,7 @@ Changed the development version to 1.2.
 Added a new READONLYSTRINGS package configuration definition which
 causes the names of primitive words to be copied to a monolithic
 buffer in which WORDSUSED may tag them when used without running
-afoul of GCCs fascist enforcement of read-only strings.  Note that
+afoul of GCC's fascist enforcement of read-only strings.  Note that
 even if READONLYSTRINGS is defined, the copy of the primitive names
 is made only if WORDSUSED is also defined.
 
@@ -42,20 +42,20 @@ the Web tree which directs anybody who links to it to the Web
 documentation.
 
 Modified the command line processing code in atlmain.c to
-dispense with an erroneous "uninitialised variable" natter
+dispense with an erroneous "uninitialized variable" natter
 from GCC 4.1.2 in -O3 -Wall mode.
 
 Modified P_strreal in atlast.c to use a union to place
 the scanned floating point number onto the stack instead
 of the cast pointer which sufficed for the last 17 years.
 GCC 4.1.2 not only generates a:
-   dereferencing type-punned pointer will break strict-aliasing rules
+   de-referencing type-punned pointer will break strict-aliasing rules
 warning in -O3 -Wall mode, it actually generates incorrect
 code for this case.
 
 Modified the TokReal case of atl_eval in atlast.c to use a union
 to store a scanned real number token onto the compiled output
-(comple state) or the stack (execution state).  This avoids the
+(compile state) or the stack (execution state).  This avoids the
 GCC natter mentioned above which, in this case, did not generate
 incorrect code with the -O3 option.
 
@@ -87,7 +87,7 @@ are now the same size of integers, programs which use floating
 point are not source code compatible with programs for the original
 32-bit version.  For example, if you wanted to duplicate the top
 floating point value on the stack, you previously had to use
-2DUP since it occuiped two stack items, but now you must use
+2DUP since it occupied two stack items, but now you must use
 DUP, as it now uses just one.
 
 I made the corresponding changes to the regression test, which were
@@ -127,8 +127,8 @@ programs were corrected.
 
 2014 July 6
 
-Completely reorganised the development and distribution directory
-structure.  There are now subdirectories for benchmark (the Atlast
+Completely reorganized the development and distribution directory
+structure.  There are now sub-directories for benchmark (the Atlast
 vs. C square root benchmark), examples (examples from the manual
 plus the floating point benchmark), and regression (the regression
 test and expected output).
