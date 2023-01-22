@@ -1,8 +1,6 @@
-                         ATLAST Development Log
+# ATLAST Development Log
 
-                             by John Walker
-
-2007 October 7
+## 2007 October 7
 
 * Changed the development version to 1.2.
 
@@ -13,7 +11,7 @@
   even if READONLYSTRINGS is defined, the copy of the primitive names
   is made only if WORDSUSED is also defined.
 
-2007 October 9
+## 2007 October 9
 
 * Created a new "dist" target which builds the distribution archive
   automatically, containing only the files it is supposed to include,
@@ -39,7 +37,7 @@
 * Retrofitted substantive changes to the LaTeX manual and rebuilt
   the PDF.
 
-2007 October 10
+## 2007 October 10
 
 * Removed the README from the MANIFEST and distribution; it is
   replaced by the XHTML documentation.  A place-holder README will be
@@ -77,7 +75,7 @@
   TIME and HHMMSS primitives as documented in the manual, to the
   MANIFEST and source distribution.
 
-2014 July 3
+## 2014 July 3
 
 * Changed development version number to 2.0.
 
@@ -108,12 +106,12 @@
   which does require alignment, you can define the tag: it still
   works.
 
-2014 July 4
+## 2014 July 4
 
 * Rebuilt the regression test expected output file, regout.txt, to
   accommodate changes due to the new memory architecture.
 
-2014 July 5
+## 2014 July 5
 
 * I decided that supporting the ANS FORTH 94 floating point primitive
   names was wasteful and not in the spirit of Atlast, especially since
@@ -131,7 +129,7 @@
 
 * A few typographical errors in the sample programs were corrected.
 
-2014 July 6
+## 2014 July 6
 
 * Completely reorganized the development and distribution directory
   structure.  There are now sub-directories for benchmark (the Atlast
@@ -148,7 +146,7 @@
   the error, will encounter a comment which explains that the program
   must be built with a memory architecture in which this is the case.
 
-ATLAST 96
+# ATLAST 96
 
 * Merge 32- and 64-bit sources
 
