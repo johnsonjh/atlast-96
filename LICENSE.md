@@ -1,3 +1,4 @@
+```
 This software is in the public domain.
 
 Permission to use, copy, modify, and distribute this software and its
@@ -5,3 +6,4 @@ documentation for any purpose and without fee is hereby granted, without
 any conditions or restrictions.
 
 This software is provided “AS-IS” without express or implied warranty.
+```
