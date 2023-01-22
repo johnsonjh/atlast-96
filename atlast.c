@@ -13,6 +13,17 @@
 #include <string.h>
 #include <unistd.h>
 
+#undef FREE
+#ifdef TESTING
+# define FREE(p) free(p)
+#else
+# define FREE(p) do  \
+  {                  \
+    free((p));       \
+    (p) = NULL;      \
+  } while(0)
+#endif /* ifdef TESTING */
+
 #ifdef ALIGNMENT
 # ifdef __TURBOC__
 #  include <mem.h>
@@ -1855,7 +1866,7 @@ P_constant()    /* Declare constant */
     stackitem  stat;
 
     Sl(3);
-    Hpc(S2);
+    Hpc(S2); /* //-V760 */
     Hpc(S0);
     Isfile(S0);
     fd = fopen((char *)S2, fopenmodes[S1]);
@@ -1876,7 +1887,7 @@ P_constant()    /* Declare constant */
   prim
   P_fclose()    /* Close file: fd -- */
   {
-    Sl(1);
+    Sl(1); /* //-V760 */
     Hpc(S0);
     Isfile(S0);
     Isopen(S0);
@@ -3065,7 +3076,7 @@ P_state()       /* Get state of system */
     Hpc(S0); /* See comments in P_fetchname above */
     Hpc(S1); /*   checking name pointers          */
     tflags           = **((char **)S0 );
-    free(*((char **)S0 ));
+    FREE(*((char **)S0 ));
     *((char **)S0 )  = cp = alloc((unsigned int)( strlen((char *)S1) + 2 ));
     V strcpy(cp + 1, (char *)S1);
     *cp              = tflags;
@@ -4044,7 +4055,7 @@ int size;
 #undef Memerrs
 #define Memerrs
 
-  if (evalstat != ATL_SNORM)     /* Did the heap overflow */
+  if (evalstat != ATL_SNORM)     /* Did the heap overflow */  /* //-V547 */
     {
       return NULL;               /* Yes.  Return NULL */
     }
@@ -4110,7 +4121,7 @@ void atl_unwind(mp) atl_statemark *mp;
 
   while (dict != NULL && dict != dictprot && dict != mp->mdict)
     {
-      free(dict->wname);  /* Release name string for item */
+      FREE(dict->wname);  /* Release name string for item */
       dict = dict->wnext; /* Link to previous item */
     }
 }
@@ -4330,12 +4341,22 @@ char *sp;
                       do
                         {
                           dw = dict;
-                          if (dw->wname != NULL)
+                          if (dw != NULL)
                             {
-                              free(dw->wname);
+                              if (dw->wname != NULL)
+                                {
+                                  FREE(dw->wname);
+                                  dw->wname = NULL;
+                                }
                             }
 
-                          dict = dw->wnext;
+                          if (dw != NULL)
+                            {
+                              if (dw->wnext != NULL)
+                                {
+                                  dict = dw->wnext;
+                                }
+                            }
                         }
                       while (dw != di);
 

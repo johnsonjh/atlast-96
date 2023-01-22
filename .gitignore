@@ -6,3 +6,5 @@ atlast64
 atlast32
 primdeftest
 *.o
+*.pvs
+compile_commands.json

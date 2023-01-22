@@ -70,7 +70,7 @@ main()
 
   atl_init();
   atl_primdef(timep);
-  while (printf("-> "), fgets(t, 132, stdin) != NULL)
+  while (fprintf(stdout, "-> "), fgets(t, 132, stdin) != NULL) /* //-V639 */
     {
       atl_eval(t);
     }
