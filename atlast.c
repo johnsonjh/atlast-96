@@ -25,20 +25,8 @@
 #endif /* ifdef TESTING */
 
 #ifdef ALIGNMENT
-# ifdef __TURBOC__
-#  include <mem.h>
-# else
-#  include <memory.h>
-# endif /* ifdef __TURBOC__ */
+# include <memory.h>
 #endif /* ifdef ALIGNMENT */
-
-/*
- * Classic Macintosh needs 32K segments, else barfage ensues.
- */
-
-#ifdef Macintosh
-# pragma segment seg2a
-#endif /* ifdef Macintosh */
 
 /*
  * Custom configuration.  If the tag CUSTOM has been defined (usually on
@@ -219,15 +207,8 @@ Exported int     cstrbuf  = 0;        /* Current temp string               */
 
 #ifdef FILEIO
   static char *fopenmodes[] = {
-# ifdef FBmode
-#  define FMspecial
-    "", "r",  "", "r+", "", "rb",   "", "r+b",
-    "",  "", "w", "w+", "",   "", "wb", "w+b"
-# endif /* ifdef FBmode */
-# ifndef FMspecial
     "", "r",  "", "r+", "",  "r",   "", "r+",
     "",  "", "w", "w+", "",   "",  "w", "w+"
-# endif /* ifndef FMspecial */
   };
 #endif /* ifdef FILEIO */
 
@@ -256,11 +237,9 @@ static Boolean       stringlit   = False;     /* String literal anticipated  */
 #endif /* ifdef BREAK */
 
 #ifdef COPYRIGHT
-# ifndef HIGHC
-#  ifndef lint
+# ifndef lint
       static
-#  endif /* ifndef lint */
-# endif /* ifndef HIGHC */
+# endif /* ifndef lint */
   char copyright[]
     = "ATLAST: This module is in the public domain.";
 #endif /* ifdef COPYRIGHT */
@@ -527,24 +506,17 @@ char **cp;
           char   tc;
           char * tcp;
 
-#ifdef USE_SSCANF
-            if (sscanf(tokbuf, "%li%c", &tokint, &tc) == 1)
-              {
-                return TokInt;
-              }
-#else
-            tokint = strtoul(tokbuf, &tcp, 0);
-            if (*tcp == 0)
-              {
-                return TokInt;
-              }
-#endif /* ifdef USE_SSCANF */
+          tokint = strtoul(tokbuf, &tcp, 0);
+          if (*tcp == 0)
+            {
+              return TokInt;
+            }
 
 #ifdef REAL
-            if (sscanf(tokbuf, "%lf%c", &tokreal, &tc) == 1)
-              {
-                return TokReal;
-              }
+          if (sscanf(tokbuf, "%lf%c", &tokreal, &tc) == 1)
+            {
+              return TokReal;
+            }
 #endif /* ifdef REAL */
         }
 
@@ -706,38 +678,6 @@ static void enter(tkname) char *tkname;
   createword->wnext     = dict;             /* Chain rest of dict to word */
   dict                  = createword;       /* Put word at head of dict   */
 }
-
-#ifdef Keyhit
-
-/*
- * KBQUIT
- *
- * If this system allows detecting key presses, handle
- * the pause, resume, and quit protocol for the word
- * listing facilities.
- */
-
-  static Boolean
-  kbquit()
-  {
-    int key;
-
-    if (( key = Keyhit()) != 0)
-      {
-        V printf("\nPress RETURN to stop, any other key to continue: ");
-        while (( key = Keyhit()) == 0)
-          {
-            ;
-          }
-        if (key == '\r' || ( key == '\n' ))
-          {
-            return True;
-          }
-      }
-
-    return False;
-  }
-#endif /* ifdef Keyhit */
 
 /*
  * Primitive word definitions.
@@ -1817,33 +1757,23 @@ P_constant()    /* Declare constant */
   prim
   P_words()     /* List words */
   {
-# ifndef Keyhit
-      int      key  = 0;
-# endif /* ifndef Keyhit */
+    int        key  = 0;
     dictword * dw   = dict;
 
     while (dw != NULL)
       {
         V printf("\n%s", dw->wname + 1);
         dw = dw->wnext;
-# ifdef Keyhit
-          if (kbquit())
-            {
-              break;
-            }
-# else
 
       /*
        * If this system can't trap keystrokes, just
        * stop the WORDS listing after 20 words.
        */
 
-          if (++key >= 20)
-            {
-              break;
-            }
-
-# endif /* ifdef Keyhit */
+        if (++key >= 20)
+          {
+            break;
+          }
       }
     V printf("\n");
   }
@@ -2194,16 +2124,6 @@ P_rfetch()      /* Fetch top item from return stack */
   So(1);
   Push = (stackitem)R0;
 }
-
-/*
- * This file creates more than 32K of object code on the Mac, which causes
- * MPW to barf.  So, we split it up into two code segments of <32K at this
- * point.
- */
-
-#ifdef Macintosh
-# pragma segment TOOLONG
-#endif /* Macintosh */
 
 /* Double stack manipulation items */
 
@@ -3127,13 +3047,6 @@ P_state()       /* Get state of system */
             V printf("\n%s", dw->wname + 1);
           }
 
-# ifdef Keyhit
-          if (kbquit())
-            {
-              break;
-            }
-# endif /* ifdef Keyhit */
-
         dw = dw->wnext;
       }
     V printf("\n");
@@ -3150,13 +3063,6 @@ P_state()       /* Get state of system */
           {
             V printf("\n%s", dw->wname + 1);
           }
-
-# ifdef Keyhit
-          if (kbquit())
-            {
-              break;
-            }
-# endif /* ifdef Keyhit */
 
         dw = dw->wnext;
       }
@@ -3748,15 +3654,12 @@ static void exword(wp) dictword *wp;
   while (ip != NULL)
     {
 #ifdef BREAK
-# ifdef Keybreak
-          Keybreak(); /* Poll for asynchronous interrupt */
-# endif /* ifdef Keybreak */
-        if (broken)
-          { /* Did we receive a break signal */
-            trouble("Break signal");
-            evalstat = ATL_BREAK;
-            break;
-          }
+      if (broken)
+        { /* Did we receive a break signal */
+          trouble("Break signal");
+          evalstat = ATL_BREAK;
+          break;
+        }
 #endif /* ifdef BREAK */
       curword = *ip++;
 #ifdef TRACE

@@ -23,8 +23,6 @@
  * Globals imported
  */
 
-#ifndef HIGHC
-
 /*
  * CTRLC
  * Catch a user console break signal.
@@ -41,7 +39,6 @@
         atl_break();
       }
   }
-#endif /* HIGHC */
 
 /*
  * MAIN
@@ -166,14 +163,7 @@ char *argv[];
           V strcat(fn, ".atl");
         }
 
-      fp = fopen(
-        fn,
-#ifdef FBmode
-          "rb"
-#else
-          "r"
-#endif /* ifdef FBmode */
-        );
+      fp = fopen(fn, "r");
       if (fp == NULL)
         {
           V fprintf(stderr, "Unable to open include file %s\n", include[i]);
@@ -193,9 +183,8 @@ char *argv[];
    * fall into the main ATLAST execution loop.
    */
 
-#ifndef HIGHC
-    V signal(SIGINT, ctrlc);
-#endif /* HIGHC */
+  V signal(SIGINT, ctrlc);
+
   while (TRUE)
     {
       char t[132];

@@ -195,33 +195,6 @@ extern int atl_exec();
 #  define ALIGNMENT
 # endif /* ifdef sparc */
 #endif /* ifndef ALIGNMENT */
-#ifdef __TURBOC__
-# define Keyhit()  ( kbhit() ? getch() : 0 )
-/* DOS needs poll to detect break */
-# define Keybreak()                    \
-  {                                    \
-    static int n = 0;                  \
-    if (( n = ( n + 1 ) & 127 ) == 0)  \
-    V kbhit();                         \
-  }
-# ifdef __MSDOS__
-#  define MSDOS
-# endif /* ifdef __MSDOS__ */
-#endif /* ifdef __TURBOC__ */
-#ifdef MSDOS
-# define FBmode  /* DOS requires binary file flag */
-#endif /* ifdef MSDOS */
-#ifdef Macintosh
-# define FBmode  /* Macintosh requires binary file flag */
-#endif /* ifdef Macintosh */
-#ifdef OS2 /* OS/2 requires binary file flag */
-# define FBmode
-#endif /* ifdef OS2 */
-
-#ifdef HIGHC
-# define unlink(x)  remove(x)
-  pragma On(PCC_msgs);
-#endif /* ifdef HIGHC */
 
 /*
  * STATIC is defined as "static" for platforms which require this
@@ -229,19 +202,6 @@ extern int atl_exec();
  */
 
 #define STATIC  static
-
-#ifdef ADS /* Definitions if we're an ADS app */
-# define printf  ads_printf  /* Print via ADS */
-# define Keybreak()                    \
-  {                                    \
-    static int n = 0;                  \
-    if (( n = ( n + 1 ) & 127 ) == 0)  \
-      {                                \
-        UbI();                         \
-        broken = ads_usrbrk();         \
-      }                                \
-  }
-#endif /* ifdef ADS */
 
 /*
  * Dynamic storage manipulation primitives

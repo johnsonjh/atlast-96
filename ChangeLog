@@ -148,4 +148,5 @@ ATLAST 96
 * Rewrite build system
 * Reformat sources for DPS8M
 * Default to ALIGNMENT again
-* Restore ANSIFLOAT FORTH-94 FP synonyms, but disabled by default.
+* Restore ANSIFLOAT FORTH-94 FP synonyms, disabled by default
+* Remove legacy (Classic Mac, MS-DOS, OS/2) system support
