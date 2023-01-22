@@ -1,2 +1,2 @@
 # ATLAST-96
-ATLAST v1.2 + ATLAST v2.0 Unification
+ATLAST-32 1.2 + ATLAST-64 2.0 Unification
