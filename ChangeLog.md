@@ -82,16 +82,18 @@
 * Completed the initial port to 64-bit architecture.  The 64-bit
   implementation uses a different (and simpler) memory architecture
   which takes advantage of the fact that integers, floating point
-  numbers, and pointers are all the same 64 bit length.  Given the
-  major changes all over the program, I decided not to use
-  conditional compilation but rather diverge the source code
-  stream for the 64-bit version.  Because floating point values
-  are now the same size of integers, programs which use floating
-  point are not source code compatible with programs for the original
-  32-bit version.  For example, if you wanted to duplicate the top
-  floating point value on the stack, you previously had to use
-  `2DUP` since it occupied two stack items, but now you must use
-  `DUP`, as it now uses just one.
+  numbers, and pointers are all the same 64 bit length.
+
+  * Given the major changes all over the program, I decided not
+    to use conditional compilation but rather diverge the source
+    code stream for the 64-bit version.
+
+  * Because floating point values are now the same size as integers,
+    programs which use floating point are not source code compatible
+    with programs for the original 32-bit version.  For example, if
+    you wanted to duplicate the top floating point value on the stack,
+    you previously had to use `2DUP` since it occupied two stack items,
+    but now you must use `DUP`, as it now uses just one.
 
 * I made the corresponding changes to the regression test, which
   were major since not only did many floating point tests need to
@@ -101,7 +103,7 @@
 
 * I removed the `ALIGNMENT` option from the default build in the
   Makefile.  With all stack items now being 8 bytes, there should
-  be no need for this on at least the *x86_64* architecture most
+  be no need for this, on at least the *x86_64* architecture most
   people will be using.  If you are building for an architecture
   which *does* require alignment, you can define the tag: it still
   works.
@@ -132,19 +134,23 @@
 ## 2014 July 6
 
 * Completely reorganized the development and distribution directory
-  structure.  There are now sub-directories for `benchmark` (the ATLAST
-  vs. C square root benchmark), `examples` (examples from the manual
-  plus the floating point benchmark), and `regression` (the regression
-  test and expected output).
+  structure.
+
+  * There are now sub-directories for `benchmark` (the ATLAST vs. C
+    square root benchmark), `examples` (examples from the manual plus
+    the floating point benchmark), and `regression` (the regression
+    test and expected output).
 
 * Updated the Makefile to create the new distribution archive format.
 
 * Added code to `atlast.c` to perform a compile-time test, using a
   hideously ugly hack from the Linux kernel, to verify that `stackitem`,
-  `pointer`, and `double` types are all 8 bytes.  If this is not the case,
-  compilation of the file will fail and the user, upon chasing down
-  the error, will encounter a comment which explains that the program
-  must be built with a memory architecture in which this is the case.
+  `pointer`, and `double` types are all 8 bytes.
+
+  * If this is not the case, compilation of the file will fail and
+    the user, upon chasing down the error, will encounter a comment
+    which explains that the program must be built with a memory
+    architecture in which this is the case.
 
 # ATLAST-96
 
