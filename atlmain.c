@@ -60,6 +60,8 @@ char *argv[];
   char * include[20];
   int    in = 0;
 
+  include[1] = NULL;
+
 #define PR(x)  ((void)fprintf(stderr, (x)))
 
 #ifdef ATLAST_64BIT
