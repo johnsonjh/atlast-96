@@ -13,7 +13,7 @@
  * ATLAST (which might create conflicts if included in calling programs).
  */
 
-#define ATLAST_VERSION  "20230123"
+#define ATLAST_VERSION  "20230124-next"
 
 #ifdef ATLAST_64BIT
 # include <stdint.h>
