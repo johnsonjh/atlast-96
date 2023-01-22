@@ -1,0 +1,8 @@
+atlast
+core
+*~
+*.bak
+atlast64
+atlast32
+primdeftest
+*.o
