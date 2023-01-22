@@ -11,7 +11,14 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 #include <unistd.h>
+
+#ifdef CHAR_BIT
+# if CHAR_BIT != 8
+#  error ERROR: CHAR_BIT != 8
+# endif /* if CHAR_BIT != 8 */
+#endif /* ifdef CHAR_BIT */
 
 #undef FREE
 #ifdef TESTING
