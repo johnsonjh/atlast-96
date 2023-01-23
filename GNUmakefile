@@ -143,7 +143,7 @@ ifdef ATLAST_64BIT
 	  ./atlast -U 2>&1 | grep -q '64-bit'
 	-@printf '%s\n\n'   "  **** Testing 64-bit ATLAST ****"
 	+@$(MAKE) --no-print-directory check64 && {                           \
-	  printf '\n%s\n\n' "  **** 64-bit testing PASSED ****" 2> /dev/null; \
+	  printf '\n%s\n'   "  **** 64-bit testing PASSED ****" 2> /dev/null; \
 	  exit 0; }; exit 1
 else
 	+@test -x ./atlast && ./atlast -U 2>&1 |                       \
@@ -153,7 +153,7 @@ else
 	  ./atlast -U 2>&1 | grep -q '32-bit'
 	-@printf '%s\n\n'   "  **** Testing 32-bit ATLAST ****"
 	+@$(MAKE) --no-print-directory check32 && {                           \
-	  printf '\n%s\n\n' "  **** 32-bit testing PASSED ****" 2> /dev/null; \
+	  printf '\n%s\n'   "  **** 32-bit testing PASSED ****" 2> /dev/null; \
 	  exit 0; }; exit 1
 endif
 
