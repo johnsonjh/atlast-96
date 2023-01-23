@@ -42,8 +42,7 @@ INCLUDE     = -I.
 
 ###############################################################################
 
-OPTFLAGS   ?= -O3
-COMFLAGS   ?= -flto
+OPTFLAGS   ?= -O3 -flto
 
 ###############################################################################
 
@@ -57,11 +56,6 @@ ATLCONFIG  += -DALIGNMENT
 
 CFLAGS  += $(OPTFLAGS) $(COMFLAGS) $(COPTIONS) \
 	   $(INCLUDE) $(ATLCONFIG) $(64CFLAGS)
-LDFLAGS += $(COMFLAGS)
-
-###############################################################################
-
-ATLOBJ = atlast.o atlmain.o
 
 ###############################################################################
 
@@ -125,25 +119,21 @@ endif
 ###############################################################################
 
 .NOTPARALLEL: atlast
-atlast: $(ATLOBJ)
+atlast: atlmain.c atlast.c atldef.h atlast.h
 ifdef ATLAST_64BIT
 	-@printf '\n%s\n\n' "  **** Linking 64-bit ATLAST ****" 2> /dev/null
 else
 	-@printf '\n%s\n\n' "  **** Linking 32-bit ATLAST ****" 2> /dev/null
 endif
-	$(CC) $(CFLAGS) $(ATLOBJ) -o atlast $(LDFLAGS) $(LIBRARIES)
-
-###############################################################################
-
-atlast.o:  atlast.c atldef.h
-atldef.h:  atlast.h
-atlmain.o: atlmain.c atlast.h
+	$(CC) $(CFLAGS) \
+		atlmain.c atlast.c -o atlast $(LIBRARIES)
 
 ###############################################################################
 
 .NOTPARALLEL: primdeftest
-primdeftest: primdeftest.c atldef.h
-	$(CC) $(CFLAGS) primdeftest.c atlast.c -o primdeftest $(LIBRARIES)
+primdeftest: primdeftest.c atlast.c atldef.h atlast.h
+	$(CC) $(CFLAGS) \
+		primdeftest.c atlast.c -o primdeftest $(LIBRARIES)
 
 ###############################################################################
 
