@@ -71,7 +71,7 @@ ifdef ATLAST_64BIT
 	  ./atlast -U 2>&1 |    \
 	  grep -q '64-bit' || { \
 	  printf '\n%s\n'       \
-	  	"  **** Cleaning 32-bit ATLAST ****" 2> /dev/null; \
+	  	"  **** Cleaning up build tree ****" 2> /dev/null; \
 	  $(MAKE) -s --no-print-directory clean ||                 \
 	  true; }
 	-@printf '%s\n' ""
@@ -96,7 +96,7 @@ else
 	  ./atlast -U 2>&1 |    \
 	  grep -q '32-bit' || { \
 	  printf '\n%s\n'       \
-	  	"  **** Cleaning 64-bit ATLAST ****" 2> /dev/null; \
+	  	"  **** Cleaning up build tree ****" 2> /dev/null; \
 	  $(MAKE) -s --no-print-directory clean ||                 \
 	  true; }
 	-@printf '\n%s\n\n'                          \
@@ -120,11 +120,6 @@ endif
 
 .NOTPARALLEL: atlast
 atlast: atlmain.c atlast.c atldef.h atlast.h
-ifdef ATLAST_64BIT
-	-@printf '\n%s\n\n' "  **** Linking 64-bit ATLAST ****" 2> /dev/null
-else
-	-@printf '\n%s\n\n' "  **** Linking 32-bit ATLAST ****" 2> /dev/null
-endif
 	$(CC) $(CFLAGS) \
 		atlmain.c atlast.c -o atlast $(LIBRARIES)
 
