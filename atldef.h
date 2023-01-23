@@ -325,49 +325,35 @@ extern int atl_exec();
 #define Realpop    stk  -= Realsize             /* Pop real from stack      */
 #define Realpop2   stk  -= ( 2 * Realsize )     /* Pop two reals from stack */
 
-#ifdef ALIGNMENT
-# ifdef ATLAST_64BIT
-#  define REAL0 \
-  *((atl_real *)memcpy((char *)&rbuf0, (char *)&S0, sizeof ( atl_real )))
-#  define REAL1 \
-  *((atl_real *)memcpy((char *)&rbuf1, (char *)&S1, sizeof ( atl_real )))
-#  define REAL2 \
-  *((atl_real *)memcpy((char *)&rbuf2, (char *)&S2, sizeof ( atl_real )))
-#  define SREAL0(x) \
-  rbuf2 = ( x );  \
-  (void)memcpy((char *)&S0, (char *)&rbuf2, sizeof ( atl_real ))
-#  define SREAL1(x) \
-  rbuf2 = ( x );  \
-  (void)memcpy((char *)&S1, (char *)&rbuf2, sizeof ( atl_real ))
+#ifdef ATLAST_64BIT
+# ifdef ALIGNMENT
+#  define REAL0 *((atl_real *) memcpy((char *) &rbuf0, (char *) &S0, sizeof(atl_real)))
+#  define REAL1 *((atl_real *) memcpy((char *) &rbuf1, (char *) &S1, sizeof(atl_real)))
+#  define REAL2 *((atl_real *) memcpy((char *) &rbuf2, (char *) &S2, sizeof(atl_real)))
+#  define SREAL0(x) rbuf2=(x); (void)memcpy((char *) &S0, (char *) &rbuf2, sizeof(atl_real))
+#  define SREAL1(x) rbuf2=(x); (void)memcpy((char *) &S1, (char *) &rbuf2, sizeof(atl_real))
 # else
-#  define REAL0 \
-  *((atl_real *)memcpy((char *)&rbuf0, (char *)&S1, sizeof ( atl_real )))
-#  define REAL1 \
-  *((atl_real *)memcpy((char *)&rbuf1, (char *)&S3, sizeof ( atl_real )))
-#  define REAL2 \
-  *((atl_real *)memcpy((char *)&rbuf2, (char *)&S5, sizeof ( atl_real )))
-#  define SREAL0(x) \
-  rbuf2 = ( x );  \
-  (void)memcpy((char *)&S1, (char *)&rbuf2, sizeof ( atl_real ))
-#  define SREAL1(x) \
-  rbuf2 = ( x );  \
-  (void)memcpy((char *)&S3, (char *)&rbuf2, sizeof ( atl_real ))
-# endif /* ifdef ATLAST_64BIT */
+#  define REAL0   *((atl_real *) &S0)   /* First real on stack  */
+#  define REAL1   *((atl_real *) &S1)   /* Second real on stack */
+#  define REAL2   *((atl_real *) &S2)   /* Third real on stack  */
+#  define SREAL0(x) *((atl_real *) &S0) = (x)
+#  define SREAL1(x) *((atl_real *) &S1) = (x)
+# endif
 #else
-# ifdef ATLAST_64BIT
-#  define REAL0       *((atl_real *)&S0 )  /* First real on stack  */
-#  define REAL1       *((atl_real *)&S1 )  /* Second real on stack */
-#  define REAL2       *((atl_real *)&S2 )  /* Third real on stack  */
-#  define SREAL0(x)   *((atl_real *)&S0 )  = ( x )
-#  define SREAL1(x)   *((atl_real *)&S1 )  = ( x )
+# ifdef ALIGNMENT
+#  define REAL0 *((atl_real *) memcpy((char *) &rbuf0, (char *) &S1, sizeof(atl_real)))
+#  define REAL1 *((atl_real *) memcpy((char *) &rbuf1, (char *) &S3, sizeof(atl_real)))
+#  define REAL2 *((atl_real *) memcpy((char *) &rbuf2, (char *) &S5, sizeof(atl_real)))
+#  define SREAL0(x) rbuf2=(x); (void)memcpy((char *) &S1, (char *) &rbuf2, sizeof(atl_real))
+#  define SREAL1(x) rbuf2=(x); (void)memcpy((char *) &S3, (char *) &rbuf2, sizeof(atl_real))
 # else
-#  define REAL0       *((atl_real *)&S1 )  /* First real on stack  */
-#  define REAL1       *((atl_real *)&S3 )  /* Second real on stack */
-#  define REAL2       *((atl_real *)&S5 )  /* Third real on stack  */
-#  define SREAL0(x)   *((atl_real *)&S1 )  = ( x )
-#  define SREAL1(x)   *((atl_real *)&S3 )  = ( x )
-# endif /* ifdef ATLAST_64BIT */
-#endif /* ifdef ALIGNMENT */
+#  define REAL0   *((atl_real *) &S1)   /* First real on stack  */
+#  define REAL1   *((atl_real *) &S3)   /* Second real on stack */
+#  define REAL2   *((atl_real *) &S5)   /* Third real on stack  */
+#  define SREAL0(x) *((atl_real *) &S1) = (x)
+#  define SREAL1(x) *((atl_real *) &S3) = (x)
+# endif
+#endif /* ifdef ATLAST_64BIT */
 
 /*
  * File I/O definitions
