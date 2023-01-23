@@ -1,4 +1,6 @@
 # ATLAST 96
+# SPDX-License-Identifier: CC-PDDC
+# SPDX-FileCopyrightText: Public domain
 ###############################################################################
 
 ifndef 64BIT

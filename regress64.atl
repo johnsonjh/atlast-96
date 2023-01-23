@@ -1,5 +1,8 @@
 \ *heap 6100
 
+\  SPDX-License-Identifier: CC-PDDC
+\  SPDX-FileCopyrightText: Public domain
+
 \  ATLAST  --  Comprehensive regression test
 
 \  Check integer result

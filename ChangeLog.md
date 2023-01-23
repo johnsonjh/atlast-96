@@ -1,3 +1,7 @@
+<!--
+SPDX-License-Identifier: CC-PDDC
+SPDX-FileCopyrightText: Public domain
+-->
 # ATLAST Development Log
 
 ## 2007 October 7

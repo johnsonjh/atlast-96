@@ -1,4 +1,8 @@
 /*
+ * vim: filetype=c:tabstop=2:ai:expandtab
+ * SPDX-License-Identifier: CC-PDDC
+ * SPDX-FileCopyrightText: Public domain
+ *
  * A T L A S T
  * PRIMDEFTEST
  *
