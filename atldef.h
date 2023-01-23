@@ -119,15 +119,13 @@ typedef struct
 #  define createword   atl__wd
 # endif /* ifndef NOMANGLE */
 
-# ifdef MEMSTAT
-#  ifndef NOMANGLE
-#   define stackmax    atl__sx
-#   define rstackmax   atl__rx
-#   define heapmax     atl__hx
-#  endif /* ifndef NOMANGLE */
+# ifndef NOMANGLE
+#  define stackmax    atl__sx
+#  define rstackmax   atl__rx
+#  define heapmax     atl__hx
+# endif /* ifndef NOMANGLE */
     extern stackitem *stackmax, *heapmax;
     extern dictword ***rstackmax;
-# endif /* ifdef MEMSTAT */
 
 # ifdef ALIGNMENT
 #  ifndef NOMANGLE
@@ -226,7 +224,6 @@ extern int atl_exec();
 #define Npop(n)   stk  -= ( n )  /* Pop N items off the stack      */
 #define Push      *stk++         /* Push item onto stack           */
 
-#ifdef MEMSTAT
 # define Mss(n)                     \
   if (( stk + ( n )) > stackmax)    \
   stackmax = stk + ( n );
@@ -236,11 +233,6 @@ extern int atl_exec();
 # define Msh(n)                     \
   if (( hptr + ( n )) > heapmax)    \
   heapmax = hptr + ( n );
-#else
-# define Mss(n)
-# define Msr(n)
-# define Msh(n)
-#endif /* ifdef MEMSTAT */
 
 #ifdef NOMEMCHECK
 # define Sl(x)

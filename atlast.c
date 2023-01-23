@@ -76,7 +76,6 @@
 # ifndef NOMEMCHECK      /* No memory checking                        */
 #  define TRACE          /* Execution tracing                         */
 #  define WALKBACK       /* Walkback trace                            */
-#  define WORDSUSED      /* Logging of words used and unused          */
 # endif /* ifndef NOMEMCHECK */
 #endif /* ifndef INDIVIDUALLY */
 
@@ -210,11 +209,9 @@ Exported int     cstrbuf  = 0;        /* Current temp string               */
   static dictword ** wbptr;           /* Walkback trace pointer */
 #endif /* ifdef WALKBACK */
 
-#ifdef MEMSTAT
   Exported stackitem *  stackmax;     /* Stack maximum excursion        */
   Exported dictword *** rstackmax;    /* Return stack maximum excursion */
   Exported stackitem *  heapmax;      /* Heap maximum excursion         */
-#endif /* ifdef MEMSTAT */
 
 #ifdef FILEIO
   static char *fopenmodes[] = {
@@ -552,9 +549,7 @@ char *tkname;
       if (!( dw->wname[0] & WORDHIDDEN )
           && ( strcmp(dw->wname + 1, tkname) == 0 ))
         {
-#ifdef WORDSUSED
-            *( dw->wname ) |= WORDUSED; /* Mark this word used */
-#endif /* ifdef WORDSUSED */
+          *( dw->wname ) |= WORDUSED; /* Mark this word used */
           break;
         }
 
@@ -646,7 +641,6 @@ char *tkname;
  * Print memory usage summary.
  */
 
-#ifdef MEMSTAT
   void
   atl_memstat()
   {
@@ -666,7 +660,6 @@ char *tkname;
     V printf(fmt, "Heap", ((long)( hptr - heap )), ((long)( heapmax - heap )),
              atl_heaplen, ( 100L * ( hptr - heap )) / atl_heaplen);
   }
-#endif /* MEMSTAT */
 
 /*
  * Primitive implementing functions.
@@ -3045,7 +3038,6 @@ P_state()       /* Get state of system */
   }
 #endif /* ifdef WALKBACK */
 
-#ifdef WORDSUSED
   prim
   P_wordsused() /* List words used by program */
   {
@@ -3079,7 +3071,6 @@ P_state()       /* Get state of system */
       }
     V printf("\n");
   }
-#endif /* ifdef WORDSUSED */
 
 #ifdef COMPILERW
   prim
@@ -3342,13 +3333,9 @@ static struct primfcn primt[] = { { "0+",           P_plus         },
 #ifdef WALKBACK
                                   { "0WALKBACK",    P_walkback     },
 #endif /* ifdef WALKBACK */
-#ifdef WORDSUSED
                                   { "0WORDSUSED",   P_wordsused    },
                                   { "0WORDSUNUSED", P_wordsunused  },
-#endif /* ifdef WORDSUSED */
-#ifdef MEMSTAT
                                   { "0MEMSTAT",     atl_memstat    },
-#endif /* ifdef MEMSTAT */
                                   { "0:",           P_colon        },
                                   { "1;",           P_semicolon    },
                                   { "0IMMEDIATE",   P_immediate    },
@@ -3426,12 +3413,8 @@ Exported void atl_primdef(pt) struct primfcn *pt;
   struct primfcn * pf = pt;
   dictword *       nw;
   int              i, n = 0;
-#ifdef WORDSUSED
-# ifdef READONLYSTRINGS
-      unsigned int  nltotal;
-      char *        dynames, *cp;
-# endif /* ifdef READONLYSTRINGS */
-#endif /* ifdef WORDSUSED */
+  unsigned int  nltotal;
+  char *        dynames, *cp;
 
   /*
    * Count the number of definitions in the table.
@@ -3443,24 +3426,20 @@ Exported void atl_primdef(pt) struct primfcn *pt;
       pf++;
     }
 
-#ifdef WORDSUSED
-# ifdef READONLYSTRINGS
-      nltotal = n;
-      for (i = 0; i < n; i++)
-        {
-          nltotal += strlen(pt[i].pname);
-        }
+  nltotal = n;
+  for (i = 0; i < n; i++)
+    {
+      nltotal += strlen(pt[i].pname);
+    }
 
-      cp = dynames = alloc(nltotal);
-      for (i = 0; i < n; i++)
-        {
-          strcpy(cp, pt[i].pname);
-          cp += strlen(cp) + 1;
-        }
+  cp = dynames = alloc(nltotal);
+  for (i = 0; i < n; i++)
+    {
+      strcpy(cp, pt[i].pname);
+      cp += strlen(cp) + 1;
+    }
 
-      cp = dynames;
-# endif /* ifdef READONLYSTRINGS */
-#endif /* ifdef WORDSUSED */
+  cp = dynames;
 
   nw               =
       (dictword *)alloc((unsigned int)( n * sizeof ( dictword )));
@@ -3468,13 +3447,9 @@ Exported void atl_primdef(pt) struct primfcn *pt;
   dict             = nw;
   for (i = 0; i < n; i++)
     {
-      nw->wname = pt->pname;
-#ifdef WORDSUSED
-# ifdef READONLYSTRINGS
-          nw->wname  = cp;
-          cp         += strlen(cp) + 1;
-# endif /* ifdef READONLYSTRINGS */
-#endif /* ifdef WORDSUSED */
+      nw->wname   = pt->pname;
+      nw->wname   = cp;
+      cp         += strlen(cp) + 1;
       nw->wcode = pt->pcode;
       if (i != ( n - 1 ))
         {
@@ -3752,9 +3727,7 @@ atl_init()
         }
 
       stk         = stackbot = stack;
-#ifdef MEMSTAT
-        stackmax  = stack;
-#endif /* ifdef MEMSTAT */
+      stackmax    = stack;
       stacktop    = stack + atl_stklen;
       if (rstack == NULL)
         { /* Allocate return stack if needed */
@@ -3763,11 +3736,9 @@ atl_init()
             * sizeof ( dictword * * ));
         }
 
-      rstk         = rstackbot = rstack;
-#ifdef MEMSTAT
-        rstackmax  = rstack;
-#endif /* ifdef MEMSTAT */
-      rstacktop    = rstack + atl_rstklen;
+      rstk        = rstackbot = rstack;
+      rstackmax   = rstack;
+      rstacktop   = rstack + atl_rstklen;
 #ifdef WALKBACK
         if (wback == NULL)
           {
@@ -3828,9 +3799,7 @@ atl_init()
 
       hptr       = heap + 1;
       state      = Falsity;
-#ifdef MEMSTAT
-        heapmax  = hptr;
-#endif /* ifdef MEMSTAT */
+      heapmax    = hptr;
       heaptop    = heap + atl_heaplen;
 
       /*

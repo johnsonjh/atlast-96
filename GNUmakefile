@@ -46,9 +46,7 @@ OPTFLAGS   ?= -O3 -flto
 
 ###############################################################################
 
-ATLCONFIG   = -DMEMSTAT
 ATLCONFIG  += -DEXPORT
-ATLCONFIG  += -DREADONLYSTRINGS
 ATLCONFIG  += -DALIGNMENT
 #ATLCONFIG += -DANSIFLOAT
 
