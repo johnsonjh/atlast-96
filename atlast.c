@@ -715,7 +715,7 @@ P_plus()     /* Add two numbers */
 {
   Sl(2);
 #ifdef TESTING
-  printf("PLUS %lx + %lx = %lx\n", S1, S0, (S1 + S0));
+  fprintf(stderr, "PLUS %lx + %lx = %lx\n", S1, S0, (S1 + S0));
 #endif /* ifdef TESTING */
   S1 += S0;
   Pop;
@@ -868,7 +868,7 @@ P_and()      /* Logical and */
 {
   Sl(2);
 #ifdef TESTING
-  printf("AND %lx & %lx = %lx\n", S1, S0, (S1 & S0));
+  fprintf(stderr, "AND %lx & %lx = %lx\n", S1, S0, (S1 & S0));
 #endif /* ifdef TESTING */
   S1 &= S0;
   Pop;
@@ -2566,7 +2566,7 @@ P_xploop()      /* Execute +LOOP */
   else
     {
       ip  += ( stackitem ) * ip;
-      R0  = (rstackitem)niter;
+      R0   = (rstackitem)niter;
     }
 }
 
@@ -2574,7 +2574,7 @@ prim
 P_leave()       /* Compile LEAVE */
 {
   Rsl(3);
-  ip    = R2;
+  ip     = R2;
   rstk  -= 3;
 }
 
@@ -2626,8 +2626,8 @@ P_abortq()      /* Abort, printing message */
 #ifdef WALKBACK
         pwalkback();
 #endif /* ifdef WALKBACK */
-      P_abort();                       /* Abort                          */
-      atl_comment  = state = Falsity;  /* Reset all interpretation state */
+      P_abort();                         /* Abort                          */
+      atl_comment  = state   = Falsity;  /* Reset all interpretation state */
       forgetpend   = defpend = stringlit = tickpend = ctickpend = False;
     }
 }
